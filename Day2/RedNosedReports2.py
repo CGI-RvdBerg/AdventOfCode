@@ -1,14 +1,16 @@
 from itertools import pairwise
+from RedNosedReports import check_safe
 
-safe_reports = 0
 with open("RedNosedReports_Data.txt") as file:
+    count = 0
     for line in file:
         levels = [int(level) for level in line.split(" ")]
-        if levels == sorted or levels[::-1] == sorted:
-            is_safe = True
-            for current_val, next_val in pairwise(levels):
-                if not 4 > abs(current_val - next_val) > 0:
-                    is_safe = False
+        if check_safe(levels):
+            count += 1
+        else:
+            for i in range(len(levels)):
+                new_levels = levels[:i] + levels[i+1:]
+                if check_safe(new_levels):
+                    count += 1
                     break
-            safe_reports += 1 if is_safe else 0
-print(safe_reports)
+    print(count)
