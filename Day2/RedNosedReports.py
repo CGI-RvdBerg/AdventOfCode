@@ -1,16 +1,14 @@
-from itertools import pairwise
+from itertools import pairwise, tee
 
-safe_reports = 0
+
+def check_safe(levels):
+    return all(
+        4 > (x - x_next) > 0 for x, x_next in pairwise(levels)
+    ) or all(
+        0 > (x - i_next) > -4 for x, x_next in pairwise(levels)
+    )
+
+
 with open("RedNosedReports_Data.txt") as file:
-    for line in file:
-        levels = [int(level) for level in line.split(" ")]
-        sorted = levels.copy()
-        sorted.sort()
-        if levels == sorted or levels[::-1] == sorted:
-            is_safe = True
-            for current_val, next_val in pairwise(levels):
-                if not 4 > abs(current_val - next_val) > 0:
-                    is_safe = False
-                    break
-            safe_reports += 1 if is_safe else 0
-print(safe_reports)
+    data = [[int(level) for level in line.split(" ")] for line in file]
+    print(sum(check_safe(levels) for levels in data))
