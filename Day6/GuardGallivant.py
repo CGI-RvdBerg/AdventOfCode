@@ -2,30 +2,31 @@ import numpy as np
 
 with open("GuardGallivant_Data.txt") as file:
     data = np.array([[char for char in line.strip()] for line in file])
-    x, y = np.where(data == "^")
+    y, x = np.where(data == "^")
     i = 0
-    while x < data.shape[0] and y < data.shape[1]:
+    while 0 <= x < data.shape[1] and 0 <= y < data.shape[0]:
         def get_new_coord():
             match i:
-                case 0:
-                    return x, y-1
-                case 1:
-                    return x-1, y
-                case 2:
-                    return x, y+1
-                case 3:
-                    return x+1, y
+                case 0:  # Up
+                    return x, y - 1
+                case 1:  # Right
+                    return x + 1, y
+                case 2:  # Down
+                    return x, y + 1
+                case 3:  # Left
+                    return x - 1, y
+
+
         new_x, new_y = get_new_coord()
         try:
-            next_step = data[new_x, new_y]
+            next_step = data[new_y, new_x]
         except IndexError:
-            print('Index out of range')
+            pass
 
         if next_step == "#":
-            i = (i+1) % 4
+            i = (i + 1) % 4
         else:
-            data[x,y] = 'X'
+            print(x, y)
+            data[y, x] = 'X'
             x, y = get_new_coord()
-    print(np.where(data == "X"))
-
-
+    print(np.where(data == "X")[0].size)
