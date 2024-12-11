@@ -14,7 +14,7 @@ with open("HoofIt_Data.txt") as file:
 
     trailhead_locs = np.where(data == 0)
     for i, j in zip(*trailhead_locs):
-        peaks = set()
+        peaks = []
 
 
         def take_next_step_from(i, j, current_height):
@@ -27,7 +27,7 @@ with open("HoofIt_Data.txt") as file:
             for new_i, new_j in neighbour_locations.values():
                 new_height = get_data_bounded(data, new_i, new_j)
                 if current_height == 8 and new_height == 9:
-                    peaks.add((new_i, new_j))
+                    peaks.append((new_i, new_j))
                 elif new_height == current_height + 1:
                     take_next_step_from(new_i, new_j, new_height)
 
