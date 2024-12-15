@@ -1,25 +1,25 @@
 import itertools
+from collections import defaultdict
 
-with open("PrintQueue_Data1.txt") as file:
-    count = 0
+with open("PrintQueue_Data.txt") as file:
     lines = [line.strip() for line in file.readlines()]
-    rules = [line.split("|") for line in lines if "|" in line]
-    rules_set = {rule[0] for rule in rules}
-    rules_dict = {rule: [] for rule in rules_set}
-    for key, value in rules:
-        rules_dict[key].append(value)
 
-    updates = [line.split(",") for line in lines if "," in line]
-    bad_lines = []
-    for line in updates:
-        for a, b in itertools.pairwise(line):
-            try:
-                if a in rules_dict[b]:
-                    bad_lines.append(line)
-                    break
-            except KeyError:
-                pass
+rules = [line.split("|") for line in lines if "|" in line]
+rules_dict = defaultdict(list)
+for key, value in rules:
+    rules_dict[key].append(value)
 
-    for line in bad_lines:
-        pass
+count = 0
+updates = [line.split(",") for line in lines if "," in line]
+for line in updates:
+    is_bad_line = False
+    for a, b in itertools.pairwise(line):
+        if a in rules_dict[b]:
+            is_bad_line = True
+            break
+    if is_bad_line:
+        for value in line:
+            position = sum(1 for val in line if val in rules_dict[value])
+            if position == len(line)//2:
+                count += int(value)
 print(count)
