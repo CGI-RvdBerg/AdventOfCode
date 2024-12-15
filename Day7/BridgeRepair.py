@@ -1,4 +1,4 @@
-from itertools import product, chain
+from itertools import product
 from operator import mul, add, concat
 
 with open("BridgeRepair_Data.txt") as file:
