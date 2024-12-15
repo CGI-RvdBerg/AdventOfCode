@@ -1,18 +1,16 @@
 import itertools
+from collections import defaultdict
 
 import numpy as np
 with open("ResonantCollinearity_Data.txt") as file:
     data = np.array([[val for val in line.strip()] for line in file.readlines()])
     result_data = np.copy(data)
 
-    antenna_dict = {}
+    antenna_dict = defaultdict(list)
     for i, line in enumerate(data):
         for j, value in enumerate(line):
             if value != '.':
-                try:
-                    antenna_dict[value].append((i, j))
-                except KeyError:
-                    antenna_dict[value] = [(i, j)]
+                antenna_dict[value].append((i, j))
 
     for key in antenna_dict:
         for permutation in itertools.permutations(antenna_dict[key],2):
