@@ -5,9 +5,9 @@ with open("RAMRun_Data.txt") as file:
     data = [[int(x) for x in line.strip().split(',')] for line in file.readlines()]
 
 start = (0, 0)
-stop = (6, 6)
+stop = (70, 70)
 size = (stop[0] + 1, stop[1] + 1)
-time = 12
+time = 1024
 max_steps = mul(*size)
 check_val = max_steps * 2
 
